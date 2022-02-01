@@ -1,6 +1,10 @@
 package sofka.app.entities;
 
+import sofka.app.entities.Categoria;
+import sofka.app.entities.Proveedore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "PRODUCTOS")
 @Entity
@@ -19,8 +23,8 @@ public class Producto {
     @JoinColumn(name = "ID_CATEGORIA")
     private Categoria idCategoria;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ID_PROVEEDOR", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "ID_PROVEEDOR")
     private Proveedore idProveedor;
 
     public Proveedore getIdProveedor() {

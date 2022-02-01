@@ -1,6 +1,4 @@
 
-[
-+src/main/java/sofka/app/entities/Venta.java,d\d\ddb6a7d2d774f93646dbffe78d4c9b87936aa040
 _
 /src/main/java/sofka/app/entities/Categoria.java,0\0\00c432e6ee541f016928f50f9e8882ced3da5952
 E

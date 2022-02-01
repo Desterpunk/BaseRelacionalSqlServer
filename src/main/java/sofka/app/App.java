@@ -1,7 +1,9 @@
 package sofka.app;
 
+import org.hibernate.mapping.Any;
 import sofka.app.entities.Cliente;
 import sofka.app.entities.Producto;
+import sofka.app.entities.Proveedore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -41,7 +43,7 @@ public class App {
 //        entityManager.remove(deleteCLiente);
         entityTransaction.commit();
 
-        System.out.println("------------- find All By Query -------------");
+        System.out.println("------------- find All Clientes Like Andres -------------");
 
         Query queryCliente = entityManager.createQuery("SELECT C FROM Cliente C WHERE C.nombre LIKE 'Andres'");
         List<Cliente> clientes=(List<Cliente>)queryCliente.getResultList( );
@@ -50,6 +52,8 @@ public class App {
             System.out.println("Cliente Id: " + c.getId());
             System.out.println("Cliente Nombre: " + c.getNombre());
         }
+
+        System.out.println("------------- find All Products Between 500 and 1000 -------------");
 
         Query queryProductos = entityManager.createQuery("SELECT P FROM Producto P WHERE  P.precio Between 500 and 1000");
         List<Producto> productos=(List<Producto>)queryProductos.getResultList( );
@@ -78,14 +82,25 @@ public class App {
             System.out.println("\t Nombre Cliente: "+c.getNombre( ));
         }
 
-        System.out.println("------------- find By Name  NamedQuery -------------");
+        System.out.println("------------- find By Name NamedQuery -------------");
         Query query3 = entityManager.createNamedQuery("Cliente.findByName");
-        query3.setParameter("nombre", "andres");
+        query3.setParameter("nombre", "juan");
         List<Cliente> listfindByName = query3.getResultList( );
         for( Cliente c:listfindByName )
         {
             System.out.print("ID Cliente: "+c.getId( ));
             System.out.println("\t Nombre Cliente: "+c.getNombre( ));
+        }
+
+        System.out.println("------------- find All Product and Proveedores -------------");
+
+        Query query4 = entityManager.createQuery("SELECT P FROM Proveedore P ");
+
+        List<Proveedore> proveedores = (List<Proveedore>)query4.getResultList();
+
+        for (Proveedore p: proveedores){
+            System.out.println("Producto Id: " + p.getId());
+            System.out.println("Producto Nombre: " + p.getNombre());
         }
         entityManager.close();
     }
