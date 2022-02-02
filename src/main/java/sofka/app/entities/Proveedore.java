@@ -21,7 +21,7 @@ public class Proveedore {
     private String telefono;
 
     @OneToMany( mappedBy = "idProveedor",cascade = CascadeType.ALL)
-    private List<Producto> idProducto;
+    private List<Producto> productos;
 
     public String getTelefono() {
         return telefono;
@@ -55,11 +55,11 @@ public class Proveedore {
         this.id = id;
     }
 
-    public List<Producto> getIdProducto() {
-        return idProducto;
+    public List<Producto> getProductos() {
+        return productos;
     }
 
-    public void setIdProducto(List<Producto> idProducto) {
-        this.idProducto = idProducto;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 }

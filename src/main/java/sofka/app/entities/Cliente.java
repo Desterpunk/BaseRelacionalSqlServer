@@ -26,7 +26,7 @@ public class Cliente {
     private String telefono;
 
     @OneToMany( mappedBy = "idCliente",cascade = CascadeType.ALL)
-    private List<Factura> idFactura;
+    private List<Factura> facturas;
 
     public String getTelefono() {
         return telefono;
@@ -60,11 +60,11 @@ public class Cliente {
         this.id = id;
     }
 
-    public List<Factura> getIdFactura() {
-        return idFactura;
+    public List<Factura> getFacturas() {
+        return facturas;
     }
 
-    public void setIdFactura(List<Factura> idFactura) {
-        this.idFactura = idFactura;
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
     }
 }

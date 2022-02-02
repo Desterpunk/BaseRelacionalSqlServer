@@ -55,4 +55,5 @@ public class Factura {
     public void setVentas(List<Venta> ventas) {
         this.ventas = ventas;
     }
+
 }

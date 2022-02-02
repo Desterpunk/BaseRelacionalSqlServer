@@ -3,7 +3,6 @@ package sofka.app;
 import sofka.app.entities.*;
 import sofka.app.services.*;
 
-import javax.xml.transform.Source;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class App {
         crudCategoria();
         crudFacturas();
         crudProducto();
+        crudVentas();
     }
 
     private static void crudClient() {
@@ -45,8 +45,8 @@ public class App {
             System.out.println("Direccion Cliente: " + c.getDireccion());
             System.out.println("Telefono Cliente: " + c.getTelefono());
             System.out.println("Facturas: ");
-            if (c.getIdFactura() != null){
-                for (Factura f: c.getIdFactura()){
+            if (c.getFacturas() != null){
+                for (Factura f: c.getFacturas()){
                     System.out.println("Id Factura: " + f.getId());
                     System.out.println("Fecha Factura: " + f.getFecha());
                     System.out.println("Id Cliente " + f.getIdCliente());
@@ -98,8 +98,8 @@ public class App {
             System.out.println("Direccion Proveedor: " + p.getDireccion());
             System.out.println("Telefono Proveedor: " + p.getTelefono());
             System.out.println("Productos: ");
-            if (p.getIdProducto() != null){
-                for (Producto pro: p.getIdProducto()){
+            if (p.getProductos() != null){
+                for (Producto pro: p.getProductos()){
                     System.out.println("Id Producto: " + pro.getId());
                     System.out.println("Descripcion Producto: " + pro.getDescripcion());
                     System.out.println("Precio Producto: " + pro.getPrecio());
@@ -145,8 +145,8 @@ public class App {
             System.out.println("Id Categoria: " + c.getId());
             System.out.println("Descripcion Categoria: " + c.getDescripcion());
             System.out.println("Productos: ");
-            if (c.getIdProducto() != null){
-                for (Producto pro: c.getIdProducto()){
+            if (c.getProductos() != null){
+                for (Producto pro: c.getProductos()){
                     System.out.println("Id Producto: " + pro.getId());
                     System.out.println("Descripcion Producto: " + pro.getDescripcion());
                     System.out.println("Precio Producto: " + pro.getPrecio());
@@ -293,5 +293,67 @@ public class App {
         categoriaService.closeEntityTransaction();
         proveedoresService.commitEntityTransaction();
         proveedoresService.closeEntityTransaction();
+    }
+
+    private static void crudVentas() {
+        VentasService ventasService = new VentasService();
+        ventasService.startEntityTransaction();
+        FacturasService facturasService = new FacturasService();
+        facturasService.startEntityTransaction();
+        ProductService productService = new ProductService();
+        productService.startEntityTransaction();
+
+        System.out.println("------------- Create Sell-------------");
+        Venta venta = new Venta();
+        venta.setIdFactura(facturasService.findBillById(1));
+        venta.setIdProducto(productService.findProductoById(1));
+        venta.setCantidad(10);
+        Venta saved = ventasService.saveSell(venta);
+        System.out.println(saved.getId() + " " + saved.getCantidad());
+
+        System.out.println("------------- Find Sell By Id -------------");
+        Venta findCategory = ventasService.findSellById(1);
+        System.out.println(findCategory.getId());
+        System.out.println(findCategory.getCantidad());
+
+        System.out.println("------------- find All Sells -------------");
+        List<Venta> ventas =  ventasService.findALlSells();
+        for (Venta v: ventas){
+            System.out.println("Id Venta: " + v.getId());
+            System.out.println("Factura Ventas: ");
+            if (v.getIdFactura() != null){
+                System.out.println("Id Factura: " + v.getIdFactura().getId());
+                System.out.println("Fecha Factura" + v.getIdFactura().getFecha());
+                System.out.println("Cliente: " + v.getIdFactura().getIdCliente());
+            }
+            System.out.println("Producto: ");
+            if (v.getIdProducto() != null){
+                System.out.println("Id Producto: " + v.getIdProducto() .getId());
+                System.out.println("Descripcion Producto: " + v.getIdProducto() .getDescripcion());
+                System.out.println("Precio Producto: " + v.getIdProducto() .getPrecio());
+            }
+            System.out.println("Cantidad Ventas: " + v.getCantidad());
+        }
+
+        System.out.println("------------- Update Sell -------------");
+        Venta updateSell = new Venta();
+        updateSell.setId(1);
+        updateSell.setIdFactura(facturasService.findBillById(1));
+        updateSell.setIdProducto(productService.findProductoById(1));
+        updateSell.setCantidad(200);
+        Venta result = ventasService.updateSell(updateSell);
+        System.out.println(result.getId());
+
+        System.out.println("------------- Delete Sell -------------");
+        ventasService.deleteSell(saved.getId());
+        System.out.println(saved.getId() + " deleted");
+
+        ventasService.commitEntityTransaction();
+        ventasService.closeEntityTransaction();
+        facturasService.commitEntityTransaction();
+        facturasService.closeEntityTransaction();
+        productService.commitEntityTransaction();
+        productService.closeEntityTransaction();
+
     }
 }

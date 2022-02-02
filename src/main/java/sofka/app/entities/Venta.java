@@ -19,13 +19,13 @@ public class Venta {
     private Producto idProducto;
 
     @Column(name = "CANTIDAD", nullable = false)
-    private Long cantidad;
+    private Integer cantidad;
 
-    public Long getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Long cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -47,6 +47,10 @@ public class Venta {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void String(Integer id) {
