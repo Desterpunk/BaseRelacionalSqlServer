@@ -1,6 +1,7 @@
 package sofka.app.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "CLIENTES")
 @Entity
@@ -11,7 +12,7 @@ import javax.persistence.*;
 })
 public class Cliente {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_CLIENTE", nullable = false)
     private Integer id;
 
@@ -23,6 +24,9 @@ public class Cliente {
 
     @Column(name = "TELEFONO", nullable = false, length = 50)
     private String telefono;
+
+    @OneToMany( mappedBy = "idCliente",cascade = CascadeType.ALL)
+    private List<Factura> idFactura;
 
     public String getTelefono() {
         return telefono;
@@ -54,5 +58,13 @@ public class Cliente {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Factura> getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(List<Factura> idFactura) {
+        this.idFactura = idFactura;
     }
 }

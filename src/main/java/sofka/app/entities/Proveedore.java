@@ -19,13 +19,8 @@ public class Proveedore {
     @Column(name = "TELEFONO", nullable = false, length = 50)
     private String telefono;
 
-    @OneToMany( targetEntity=Producto.class )
-    @JoinColumn(name = "ID_PRODUCTO")
-    private List idProducto;
-
-//    @OneToMany
-//    @JoinColumn(name = "ID_PRODUCTO")
-//    private List<Producto> idProducto;
+    @OneToMany( mappedBy = "idProveedor",cascade = CascadeType.ALL)
+    private List<Producto> idProducto;
 
     public String getTelefono() {
         return telefono;
