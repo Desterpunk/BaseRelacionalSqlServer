@@ -15,23 +15,13 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
 
-        crudClient();
+//        crudClient();
 //        crudProveedor();
 //        crudCategoria();
 //        crudFacturas();
 //        crudProducto();
 //        crudVentas();
-        crudHibbernateClient();
-
-//        HibernateUtil.buildSessionFactory();
-//        HibernateUtil.openSession();
-//        Session session = HibernateUtil.getCurrentSession();
-//        session.beginTransaction();
-//        List<Cliente> clientes = session.createQuery("from Cliente").list();
-//        session.getTransaction().commit();
-//        for (Cliente c: clientes) {
-//            System.out.println(c.getNombre());
-//        }
+//        crudHibbernateClient();
     }
 
     private static void crudClient() {
@@ -149,6 +139,7 @@ public class App {
 
         System.out.println("------------- Create Provider-------------");
         Proveedore proveedor = new Proveedore();
+        proveedor.setId(9);
         proveedor.setNombre("jhon");
         proveedor.setDireccion("medellin");
         proveedor.setTelefono("32133912620");
@@ -202,6 +193,7 @@ public class App {
 
         System.out.println("------------- Create Category-------------");
         Categoria categoria = new Categoria();
+        categoria.setId(8);
         categoria.setDescripcion("Juegos");
         Categoria saved = categoriaService.saveCategory(categoria);
         System.out.println(saved.getId() + " " + saved.getDescripcion());
@@ -249,6 +241,7 @@ public class App {
 
         System.out.println("------------- Create Bill-------------");
         Factura factura = new Factura();
+        factura.setId(11);
         factura.setFecha(LocalDate.now());
         factura.setIdCliente(clientService.findClienteById(1));
         Factura saved = facturasService.saveBill(factura);
@@ -308,6 +301,7 @@ public class App {
 
         System.out.println("------------- Create Product-------------");
         Producto producto = new Producto();
+        producto.setId(14);
         producto.setDescripcion("gameplay");
         producto.setPrecio(5000);
         producto.setIdCategoria(categoriaService.findCategoryById(1));
@@ -377,6 +371,7 @@ public class App {
 
         System.out.println("------------- Create Sell-------------");
         Venta venta = new Venta();
+        venta.setId(11);
         venta.setIdFactura(facturasService.findBillById(1));
         venta.setIdProducto(productService.findProductoById(1));
         venta.setCantidad(10);
