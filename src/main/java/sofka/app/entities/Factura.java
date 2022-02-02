@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 public class Factura {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_FACTURA", nullable = false, length = 50)
     private Integer id;
 
