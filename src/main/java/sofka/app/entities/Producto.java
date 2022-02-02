@@ -28,6 +28,9 @@ public class Producto {
     @JoinColumn(name = "ID_PROVEEDOR")
     private Proveedore idProveedor;
 
+    @OneToMany( mappedBy = "idProducto",cascade = CascadeType.ALL)
+    private List<Venta> ventas;
+
     public Proveedore getIdProveedor() {
         return idProveedor;
     }
@@ -66,5 +69,13 @@ public class Producto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Venta> getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(List<Venta> ventas) {
+        this.ventas = ventas;
     }
 }

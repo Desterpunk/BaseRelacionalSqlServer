@@ -261,6 +261,15 @@ public class App {
                     System.out.println("Id Categoria: " + p.getIdCategoria().getId());
                     System.out.println("Descripcion Categoria: " + p.getIdCategoria().getDescripcion());
             }
+            System.out.println("Ventas: ");
+            if (p.getVentas() != null){
+                for (Venta v: p.getVentas()){
+                    System.out.println("Id Venta: " + v.getId());
+                    System.out.println("Id Factura: " + v.getIdFactura());
+                    System.out.println("Id Producto: " + v.getIdProducto());
+                    System.out.println("Cantidad: " + v.getCantidad());
+                }
+            }
         }
 
         System.out.println("------------- Update Product -------------");
