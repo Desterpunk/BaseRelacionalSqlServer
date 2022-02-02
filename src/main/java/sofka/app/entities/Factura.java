@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Factura {
     @Id
     @Column(name = "ID_FACTURA", nullable = false, length = 50)
-    private String id;
+    private Integer id;
 
     @Column(name = "FECHA", nullable = false)
     private LocalDate fecha;
@@ -35,11 +35,11 @@ public class Factura {
         this.fecha = fecha;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

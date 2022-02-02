@@ -1,19 +1,20 @@
 package sofka.app.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "CATEGORIAS")
 @Entity
 public class Categoria {
     @Id
     @Column(name = "ID_CATEGORIA", nullable = false, length = 50)
-    private String id;
+    private Integer id;
 
     @Column(name = "DESCRIPCION", nullable = false, length = 50)
     private String descripcion;
+
+    @OneToMany( mappedBy = "idCategoria",cascade = CascadeType.ALL)
+    private List<Producto> idProducto;
 
     public String getDescripcion() {
         return descripcion;
@@ -23,11 +24,19 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Producto> getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(List<Producto> idProducto) {
+        this.idProducto = idProducto;
     }
 }

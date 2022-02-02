@@ -8,7 +8,7 @@ import java.util.List;
 public class Proveedore {
     @Id
     @Column(name = "ID_PROVEEDOR", nullable = false, length = 50)
-    private String id;
+    private Integer id;
 
     @Column(name = "NOMBRE", nullable = false, length = 50)
     private String nombre;
@@ -46,11 +46,11 @@ public class Proveedore {
         this.nombre = nombre;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

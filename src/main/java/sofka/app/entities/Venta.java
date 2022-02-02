@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Venta {
     @Id
     @Column(name = "ID_VENTA", nullable = false, length = 50)
-    private String id;
+    private Integer id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "ID_FACTURA", nullable = false)
@@ -44,11 +44,11 @@ public class Venta {
         this.idFactura = idFactura;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
