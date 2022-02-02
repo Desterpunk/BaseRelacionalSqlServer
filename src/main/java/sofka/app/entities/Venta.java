@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Venta {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     @Column(name = "ID_VENTA", nullable = false, length = 50)
     private Integer id;
 

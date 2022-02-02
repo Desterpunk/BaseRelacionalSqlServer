@@ -1,21 +1,37 @@
 package sofka.app;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import sofka.app.entities.*;
 import sofka.app.services.*;
+import sofka.app.services_hibernate.ClientServiceHibernate;
+import sofka.app.utils.HibernateUtil;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 
 public class App {
     public static void main(String[] args) {
 
         crudClient();
-        crudProveedor();
-        crudCategoria();
-        crudFacturas();
-        crudProducto();
-        crudVentas();
+//        crudProveedor();
+//        crudCategoria();
+//        crudFacturas();
+//        crudProducto();
+//        crudVentas();
+        crudHibbernateClient();
+
+//        HibernateUtil.buildSessionFactory();
+//        HibernateUtil.openSession();
+//        Session session = HibernateUtil.getCurrentSession();
+//        session.beginTransaction();
+//        List<Cliente> clientes = session.createQuery("from Cliente").list();
+//        session.getTransaction().commit();
+//        for (Cliente c: clientes) {
+//            System.out.println(c.getNombre());
+//        }
     }
 
     private static void crudClient() {
@@ -24,6 +40,7 @@ public class App {
 
         System.out.println("------------- Create Cliente-------------");
         Cliente cliente = new Cliente();
+        cliente.setId(8);
         cliente.setNombre("jhon");
         cliente.setDireccion("medellin");
         cliente.setTelefono("32133912620");
@@ -69,6 +86,61 @@ public class App {
 
         clientService.commitEntityTransaction();
         clientService.closeEntityTransaction();
+    }
+
+    private static void crudHibbernateClient() {
+        ClientServiceHibernate clientServiceHibernate = new ClientServiceHibernate();
+
+        System.out.println("------------- Create Cliente-------------");
+        Cliente cliente = new Cliente();
+        cliente.setId(8);
+        cliente.setNombre("jhon");
+        cliente.setDireccion("medellin");
+        cliente.setTelefono("32133912620");
+        try {
+            Cliente saved = clientServiceHibernate.saveClient(cliente);
+            System.out.println(saved.getId() + " " + saved.getNombre());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Cliente By Id -------------");
+        Cliente findCliente = clientServiceHibernate.findClienteById(1);
+        System.out.println(findCliente.getId());
+        System.out.println(findCliente.getNombre());
+        System.out.println(findCliente.getDireccion());
+        System.out.println(findCliente.getTelefono());
+//
+        System.out.println("------------- find All Clientes -------------");
+        List<Cliente> clientes =  clientServiceHibernate.findAllClients();
+        for (Cliente c: clientes){
+            System.out.println("Id Cliente: " + c.getId());
+            System.out.println("Nombre Cliente: " + c.getNombre());
+            System.out.println("Direccion Cliente: " + c.getDireccion());
+            System.out.println("Telefono Cliente: " + c.getTelefono());
+            System.out.println("Facturas: ");
+            if (c.getFacturas() != null){
+                for (Factura f: c.getFacturas()){
+                    System.out.println("Id Factura: " + f.getId());
+                    System.out.println("Fecha Factura: " + f.getFecha());
+                    System.out.println("Id Cliente " + f.getIdCliente());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Cliente -------------");
+        Cliente updateCliente = new Cliente();
+        updateCliente.setId(1);
+        updateCliente.setNombre("Paco");
+        updateCliente.setDireccion("medellin");
+        updateCliente.setTelefono("32133912620");
+        Cliente result = clientServiceHibernate.updateCliente(updateCliente);
+        System.out.println(result.getNombre());
+
+        System.out.println("------------- Delete Cliente -------------");
+        clientServiceHibernate.deleteCliente(8);
+        System.out.println(cliente.getId() + " deleted");
     }
 
     private static void crudProveedor() {

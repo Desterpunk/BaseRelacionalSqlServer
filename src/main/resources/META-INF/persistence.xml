@@ -26,6 +26,8 @@
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password"
                       value="SQLpassword"/>
+            <property name= "hibernate.show_sql" value="true" />
+            <property name="hibernate.SQLServerDialect" value="org.hibernate.dialect.SQLServerDialect" />
 
 <!--            &lt;!&ndash; Hibernate properties &ndash;&gt;-->
 <!--            <property name="hibernate.dialect"-->
