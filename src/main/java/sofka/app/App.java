@@ -1,6 +1,7 @@
 package sofka.app;
 
 import sofka.app.entities.*;
+import sofka.app.services.CategoriaService;
 import sofka.app.services.ClientService;
 import sofka.app.services.ProductService;
 import sofka.app.services.ProveedoresService;
@@ -14,6 +15,7 @@ public class App {
 
         crudClient();
         crudProveedor();
+        crudCategoria();
     }
 
     private static void crudClient() {
@@ -120,6 +122,51 @@ public class App {
 
         proveedoresService.commitEntityTransaction();
         proveedoresService.closeEntityTransaction();
+    }
+
+    private static void crudCategoria() {
+        CategoriaService categoriaService = new CategoriaService();
+        categoriaService.startEntityTransaction();
+
+        System.out.println("------------- Create Category-------------");
+        Categoria categoria = new Categoria();
+        categoria.setDescripcion("Juegos");
+        Categoria saved = categoriaService.saveCategory(categoria);
+        System.out.println(saved.getId() + " " + saved.getDescripcion());
+
+        System.out.println("------------- Find Category By Id -------------");
+        Categoria findCategory = categoriaService.findCategoryById(1);
+        System.out.println(findCategory.getId());
+        System.out.println(findCategory.getDescripcion());
+
+        System.out.println("------------- find All Categories -------------");
+        List<Categoria> categorias =  categoriaService.findALlCategories();
+        for (Categoria c: categorias){
+            System.out.println("Id Categoria: " + c.getId());
+            System.out.println("Descripcion Categoria: " + c.getDescripcion());
+            System.out.println("Productos: ");
+            if (c.getIdProducto() != null){
+                for (Producto pro: c.getIdProducto()){
+                    System.out.println("Id Producto: " + pro.getId());
+                    System.out.println("Descripcion Producto: " + pro.getDescripcion());
+                    System.out.println("Precio Producto: " + pro.getPrecio());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Category -------------");
+        Categoria updateCategory = new Categoria();
+        updateCategory.setId(1);
+        updateCategory.setDescripcion("Aseo");
+        Categoria result = categoriaService.updateCategory(updateCategory);
+        System.out.println(result.getDescripcion());
+
+        System.out.println("------------- Delete Category -------------");
+        categoriaService.deleteCategory(saved.getId());
+        System.out.println(saved.getId() + " deleted");
+
+        categoriaService.commitEntityTransaction();
+        categoriaService.closeEntityTransaction();
     }
 
 //    private static void crudProducto() {
