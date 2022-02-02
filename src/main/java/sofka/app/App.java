@@ -1,12 +1,10 @@
 package sofka.app;
 
 import sofka.app.entities.*;
-import sofka.app.services.CategoriaService;
-import sofka.app.services.ClientService;
-import sofka.app.services.ProductService;
-import sofka.app.services.ProveedoresService;
+import sofka.app.services.*;
 
 import javax.xml.transform.Source;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -16,6 +14,7 @@ public class App {
         crudClient();
         crudProveedor();
         crudCategoria();
+        crudFacturas();
     }
 
     private static void crudClient() {
@@ -167,6 +166,61 @@ public class App {
 
         categoriaService.commitEntityTransaction();
         categoriaService.closeEntityTransaction();
+    }
+
+    private static void crudFacturas() {
+        FacturasService facturasService = new FacturasService();
+        facturasService.startEntityTransaction();
+        ClientService clientService = new ClientService();
+        clientService.startEntityTransaction();
+
+        System.out.println("------------- Create Bill-------------");
+        Factura factura = new Factura();
+        factura.setFecha(LocalDate.now());
+        factura.setIdCliente(clientService.findClienteById(1));
+        Factura saved = facturasService.saveBill(factura);
+        System.out.println(saved.getId() + " " + saved.getFecha());
+
+        System.out.println("------------- Find Bill By Id -------------");
+        Factura findCategory = facturasService.findBillById(1);
+        System.out.println(findCategory.getId());
+        System.out.println(findCategory.getFecha());
+
+        System.out.println("------------- find All Bills -------------");
+        List<Factura> facturas =  facturasService.findALlBills();
+        for (Factura f: facturas){
+            System.out.println("Id Factura: " + f.getId());
+            System.out.println("Fecha Factura" + f.getFecha());
+            System.out.println("Cliente: ");
+            System.out.println("Id Cliente: " + f.getIdCliente().getId());
+            System.out.println("Nombre Cliente: " + f.getIdCliente().getNombre());
+            System.out.println("Direccion Cliente: " + f.getIdCliente().getDireccion());
+            System.out.println("Telefono Cliente: " + f.getIdCliente().getTelefono());
+            System.out.println("Ventas: ");
+            if (f.getVentas() != null){
+                for (Venta v: f.getVentas()){
+                    System.out.println("Id Venta: " + v.getId());
+                    System.out.println("Id Factura: " + v.getIdFactura());
+                    System.out.println("Id Producto: " + v.getIdProducto());
+                    System.out.println("Cantidad: " + v.getCantidad());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Bill -------------");
+        Factura updateBill = new Factura();
+        updateBill.setId(1);
+        updateBill.setFecha(LocalDate.now());
+        updateBill.setIdCliente(clientService.findClienteById(1));
+        Factura result = facturasService.updateBill(updateBill);
+        System.out.println(result.getId());
+
+        System.out.println("------------- Delete Category -------------");
+        facturasService.deleteBill(saved.getId());
+        System.out.println(saved.getId() + " deleted");
+
+        facturasService.commitEntityTransaction();
+        facturasService.closeEntityTransaction();
     }
 
 //    private static void crudProducto() {

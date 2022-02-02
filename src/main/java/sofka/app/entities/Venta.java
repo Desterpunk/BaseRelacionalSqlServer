@@ -49,7 +49,7 @@ public class Venta {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void String(Integer id) {
         this.id = id;
     }
 }
