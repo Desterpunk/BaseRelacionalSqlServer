@@ -15,6 +15,7 @@ public class App {
         crudProveedor();
         crudCategoria();
         crudFacturas();
+        crudProducto();
     }
 
     private static void crudClient() {
@@ -221,52 +222,67 @@ public class App {
 
         facturasService.commitEntityTransaction();
         facturasService.closeEntityTransaction();
+        clientService.commitEntityTransaction();
+        clientService.closeEntityTransaction();
     }
 
-//    private static void crudProducto() {
-//        ProductService productService = new ProductService();
-//        productService.startEntityTransaction();
-//
-//        System.out.println("------------- Create Product-------------");
-//        Producto producto = new Producto();
-//        producto.setDescripcion("gameplay");
-//        producto.setPrecio(5000);
-//        Producto saved = productService.saveProducto(producto);
-//        System.out.println(saved.getId() + " " + saved.getDescripcion());
-//
-//        System.out.println("------------- Find Product By Id -------------");
-//        Producto findProduct = productService.findProductoById(1);
-//        System.out.println(findProduct.getId());
-//        System.out.println(findProduct.getDescripcion());
-//        System.out.println(findProduct.getIdCategoria());
-//        System.out.println(findProduct.getIdProveedor());
-//
-//        System.out.println("------------- find All Products -------------");
-//        List<Producto> productos =  productService.findALlProductos();
-//        for (Producto p: productos){
-//            System.out.println("Id Producto: " + p.getId());
-//            System.out.println("Descripcion Producto: " + p.getDescripcion());
-//            System.out.println("Precio Producto: " + p.getPrecio());
-//            System.out.println("Categoria: ");
-//            if (p.getIdCategoria() != null){
-//                    System.out.println("Id Categoria: " + p.getIdCategoria().getId());
-//                    System.out.println("Descripcion Categoria: " + p.getIdCategoria().getDescripcion());
-//            }
-//        }
-//
-//        System.out.println("------------- Update Product -------------");
-//        Producto updateProduct = new Producto();
-//        updateProduct.setId(1);
-//        updateProduct.setDescripcion("gameplay");
-//        updateProduct.setPrecio(5000);
-//        Producto resultProduct = productService.updateProducto(updateProduct);
-//        System.out.println(resultProduct.getDescripcion());
-//
-//        System.out.println("------------- Delete Cliente -------------");
-//        productService.deleteProducto(saved.getId());
-//        System.out.println(saved.getId() + " deleted");
-//
-//        productService.commitEntityTransaction();
-//        productService.closeEntityTransaction();
-//    }
+    private static void crudProducto() {
+        ProductService productService = new ProductService();
+        productService.startEntityTransaction();
+        CategoriaService categoriaService = new CategoriaService();
+        categoriaService.startEntityTransaction();
+        ProveedoresService proveedoresService = new ProveedoresService();
+        proveedoresService.startEntityTransaction();
+
+        System.out.println("------------- Create Product-------------");
+        Producto producto = new Producto();
+        producto.setDescripcion("gameplay");
+        producto.setPrecio(5000);
+        producto.setIdCategoria(categoriaService.findCategoryById(1));
+        producto.setIdProveedor(proveedoresService.findProveedorById(1));
+        Producto saved = productService.saveProducto(producto);
+        System.out.println(saved.getId() + " " + saved.getDescripcion());
+
+        System.out.println("------------- Find Product By Id -------------");
+        Producto findProduct = productService.findProductoById(1);
+        System.out.println(findProduct.getId());
+        System.out.println(findProduct.getDescripcion());
+        System.out.println(findProduct.getIdCategoria());
+        System.out.println(findProduct.getIdProveedor());
+
+        System.out.println("------------- find All Products -------------");
+        List<Producto> productos =  productService.findALlProductos();
+        for (Producto p: productos){
+            System.out.println("Id Producto: " + p.getId());
+            System.out.println("Descripcion Producto: " + p.getDescripcion());
+            System.out.println("Precio Producto: " + p.getPrecio());
+            System.out.println("Categoria: ");
+            if (p.getIdCategoria() != null){
+                    System.out.println("Id Categoria: " + p.getIdCategoria().getId());
+                    System.out.println("Descripcion Categoria: " + p.getIdCategoria().getDescripcion());
+            }
+        }
+
+        System.out.println("------------- Update Product -------------");
+        Producto updateProduct = new Producto();
+        updateProduct.setId(1);
+        updateProduct.setDescripcion("gameplay");
+        updateProduct.setPrecio(5000);
+        updateProduct.setIdCategoria(categoriaService.findCategoryById(2));
+        updateProduct.setIdProveedor(proveedoresService.findProveedorById(2));
+
+        Producto resultProduct = productService.updateProducto(updateProduct);
+        System.out.println(resultProduct.getDescripcion());
+
+        System.out.println("------------- Delete Cliente -------------");
+        productService.deleteProducto(saved.getId());
+        System.out.println(saved.getId() + " deleted");
+
+        productService.commitEntityTransaction();
+        productService.closeEntityTransaction();
+        categoriaService.commitEntityTransaction();
+        categoriaService.closeEntityTransaction();
+        proveedoresService.commitEntityTransaction();
+        proveedoresService.closeEntityTransaction();
+    }
 }
