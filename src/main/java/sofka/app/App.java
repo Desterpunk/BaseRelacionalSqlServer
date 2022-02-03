@@ -6,6 +6,7 @@ import sofka.app.entities.*;
 import sofka.app.services.*;
 import sofka.app.services_hibernate.CategoriaServiceHibernate;
 import sofka.app.services_hibernate.ClientServiceHibernate;
+import sofka.app.services_hibernate.ProveedorServiceHibernate;
 import sofka.app.utils.HibernateUtil;
 
 import java.time.LocalDate;
@@ -22,8 +23,9 @@ public class App {
 //        crudFacturas();
 //        crudProducto();
 //        crudVentas();
-        crudHibbernateClient();
-        crudHibernateCategoria();
+//        crudHibbernateClient();
+//        crudHibernateCategoria();
+        crudHibernateProveedor();
     }
 
     private static void crudClient() {
@@ -192,6 +194,66 @@ public class App {
 
         proveedoresService.commitEntityTransaction();
         proveedoresService.closeEntityTransaction();
+    }
+
+    private static void crudHibernateProveedor() {
+        ProveedorServiceHibernate proveedorServiceHibernate = new ProveedorServiceHibernate();
+
+        System.out.println("------------- Create Provider-------------");
+        Proveedore proveedor = new Proveedore();
+        proveedor.setId(9);
+        proveedor.setNombre("jhon");
+        proveedor.setDireccion("medellin");
+        proveedor.setTelefono("32133912620");
+        try {
+            Proveedore saved = proveedorServiceHibernate.saveProveedor(proveedor);
+            System.out.println(saved.getId() + " " + saved.getNombre());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Provider By Id -------------");
+        Proveedore findProveedor = proveedorServiceHibernate.findProveedorById(1);
+        System.out.println(findProveedor.getId());
+        System.out.println(findProveedor.getNombre());
+        System.out.println(findProveedor.getDireccion());
+        System.out.println(findProveedor.getTelefono());
+
+        System.out.println("------------- find All Categories -------------");
+        List<Proveedore> proveedores =  proveedorServiceHibernate.findAllProveedores();
+        for (Proveedore p: proveedores){
+
+            System.out.println("Id Proveedor: " + p.getId());
+            System.out.println("Nombre Proveedor: " + p.getNombre());
+            System.out.println("Direccion Proveedor: " + p.getDireccion());
+            System.out.println("Telefono Proveedor: " + p.getTelefono());
+            System.out.println("Productos: ");
+            if (p.getProductos() != null){
+                for (Producto pro: p.getProductos()){
+                    System.out.println("Id Producto: " + pro.getId());
+                    System.out.println("Descripcion Producto: " + pro.getDescripcion());
+                    System.out.println("Precio Producto: " + pro.getPrecio());
+                }
+            }
+        }
+        System.out.println("------------- Update Provider -------------");
+        Proveedore updateProvider = new Proveedore();
+        updateProvider.setId(1);
+        updateProvider.setNombre("Paco");
+        updateProvider.setDireccion("medellin");
+        updateProvider.setTelefono("32133912620");
+        try {
+            Proveedore result = proveedorServiceHibernate.updateProveedor(updateProvider);
+            System.out.println(result.getNombre());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Delete Provider -------------");
+        proveedorServiceHibernate.deleteProveedor(proveedor.getId());
+        System.out.println(proveedor.getId() + " deleted");
     }
 
     private static void crudCategoria() {
