@@ -6,6 +6,7 @@ import sofka.app.entities.*;
 import sofka.app.services.*;
 import sofka.app.services_hibernate.CategoriaServiceHibernate;
 import sofka.app.services_hibernate.ClientServiceHibernate;
+import sofka.app.services_hibernate.FacturasServiceHibernate;
 import sofka.app.services_hibernate.ProveedorServiceHibernate;
 import sofka.app.utils.HibernateUtil;
 
@@ -25,7 +26,8 @@ public class App {
 //        crudVentas();
 //        crudHibbernateClient();
 //        crudHibernateCategoria();
-        crudHibernateProveedor();
+//        crudHibernateProveedor();
+        crudHibernateFacturas();
     }
 
     private static void crudClient() {
@@ -410,6 +412,67 @@ public class App {
         facturasService.closeEntityTransaction();
         clientService.commitEntityTransaction();
         clientService.closeEntityTransaction();
+    }
+
+    private static void crudHibernateFacturas() {
+        FacturasServiceHibernate facturasServiceHibernate = new FacturasServiceHibernate();
+        ClientServiceHibernate clientServiceHibernate = new ClientServiceHibernate();
+
+        System.out.println("------------- Create Factura-------------");
+        Factura factura = new Factura();
+        factura.setId(11);
+        factura.setFecha(LocalDate.now());
+        factura.setIdCliente(clientServiceHibernate.findClienteById(1));
+        try {
+            Factura saved = facturasServiceHibernate.saveFacura(factura);
+            System.out.println(saved.getId() + " " + saved.getFecha());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Factura By Id -------------");
+        Factura findFactura = facturasServiceHibernate.findFacturaById(1);
+        System.out.println(findFactura.getId());
+        System.out.println(findFactura.getFecha());
+
+        System.out.println("------------- find All Facturas -------------");
+        List<Factura> facturas =  facturasServiceHibernate.findAllFacturas();
+        for (Factura f: facturas){
+            System.out.println("Id Factura: " + f.getId());
+            System.out.println("Fecha Factura" + f.getFecha());
+            System.out.println("Cliente: ");
+            System.out.println("Id Cliente: " + f.getIdCliente().getId());
+            System.out.println("Nombre Cliente: " + f.getIdCliente().getNombre());
+            System.out.println("Direccion Cliente: " + f.getIdCliente().getDireccion());
+            System.out.println("Telefono Cliente: " + f.getIdCliente().getTelefono());
+            System.out.println("Ventas: ");
+            if (f.getVentas() != null){
+                for (Venta v: f.getVentas()){
+                    System.out.println("Id Venta: " + v.getId());
+                    System.out.println("Id Factura: " + v.getIdFactura());
+                    System.out.println("Id Producto: " + v.getIdProducto());
+                    System.out.println("Cantidad: " + v.getCantidad());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Factura -------------");
+        Factura updateBill = new Factura();
+        updateBill.setId(1);
+        updateBill.setFecha(LocalDate.now());
+        updateBill.setIdCliente(clientServiceHibernate.findClienteById(1));
+        try {
+            Factura result = facturasServiceHibernate.updateFactura(updateBill);
+            System.out.println(result.getFecha());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Delete Factura -------------");
+        facturasServiceHibernate.deleteFactura(factura.getId());
+        System.out.println(factura.getId() + " deleted");
     }
 
     private static void crudProducto() {

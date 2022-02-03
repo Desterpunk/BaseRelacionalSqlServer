@@ -1,3 +1,27 @@
 
 E
 .jpb/jpb-settings.xml,4\4\44d3869e4ab8f5a6660709b629065ab6e5795b01
+c
+3src/main/java/sofka/app/services/VentasService.java,5\9\595c9bed3c36194e3b9f76b61ae2b0e65e21ea32
+T
+$src/test/java/TestEntityManager.java,6\e\6e1cde7367e66d961603ca0861b228d47d27403c
+d
+4src/main/java/sofka/app/services/ProductService.java,9\8\98539cf7a9b789e956fc7d96745040bc6e46c50e
+c
+3src/main/java/sofka/app/services/ClientService.java,b\f\bfb707434ae0923ff66b024fe0a011ab91815505
+]
+-src/main/java/sofka/app/entities/Cliente.java,c\0\c0a7468d79a5812118f6a27630efec1a80a66cf2
+_
+/src/main/java/sofka/app/entities/Categoria.java,0\0\00c432e6ee541f016928f50f9e8882ced3da5952
+]
+-src/main/java/sofka/app/entities/Factura.java,b\6\b6c360ac4531c0760df70d0ac177072606ed7532
+^
+.src/main/java/sofka/app/entities/Producto.java,7\9\7953e640ba8b01715a3f39160327c833f4fb7d5e
+`
+0src/main/java/sofka/app/entities/Proveedore.java,1\7\17c85f1b9cef623486a345af69d42ef91e4b556c
+[
++src/main/java/sofka/app/entities/Venta.java,d\d\ddb6a7d2d774f93646dbffe78d4c9b87936aa040
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+h
+8src/main/java/sofka/app/services/ProveedoresService.java,1\d\1df24922c67eb0b7a48e5fb57d2d9ff007f8d9da
