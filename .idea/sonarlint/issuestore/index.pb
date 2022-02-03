@@ -1,8 +1,6 @@
 
 E
 .jpb/jpb-settings.xml,4\4\44d3869e4ab8f5a6660709b629065ab6e5795b01
-c
-3src/main/java/sofka/app/services/VentasService.java,5\9\595c9bed3c36194e3b9f76b61ae2b0e65e21ea32
 T
 $src/test/java/TestEntityManager.java,6\e\6e1cde7367e66d961603ca0861b228d47d27403c
 c

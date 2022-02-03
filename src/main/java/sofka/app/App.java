@@ -25,7 +25,8 @@ public class App {
 //        crudHibernateCategoria();
 //        crudHibernateProveedor();
 //        crudHibernateFacturas();
-        crudHibernateProducto();
+//        crudHibernateProducto();
+        crudHibernateVentas();
     }
 
     private static void crudClient() {
@@ -671,5 +672,67 @@ public class App {
         productService.commitEntityTransaction();
         productService.closeEntityTransaction();
 
+    }
+
+    private static void crudHibernateVentas() {
+        VentasServiceHibernate ventasServiceHibernate = new VentasServiceHibernate();
+        FacturasServiceHibernate facturasServiceHibernate = new FacturasServiceHibernate();
+        ProductoServiceHibernate productoServiceHibernate = new ProductoServiceHibernate();
+
+        System.out.println("------------- Create Venta-------------");
+        Venta venta = new Venta();
+        venta.setId(11);
+        venta.setIdFactura(facturasServiceHibernate.findFacturaById(1));
+        venta.setIdProducto(productoServiceHibernate.findProductoById(1));
+        venta.setCantidad(10);
+        try {
+            Venta saved = ventasServiceHibernate.saveSell(venta);
+            System.out.println(saved.getId() + " " + saved.getCantidad());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Venta By Id -------------");
+        Venta findVenta = ventasServiceHibernate.findSellById(1);
+        System.out.println(findVenta.getId());
+        System.out.println(findVenta.getCantidad());
+
+        System.out.println("------------- find All Ventas -------------");
+        List<Venta> ventas =  ventasServiceHibernate.findALlSells();
+        for (Venta v: ventas){
+            System.out.println("Id Venta: " + v.getId());
+            System.out.println("Factura Ventas: ");
+            if (v.getIdFactura() != null){
+                System.out.println("Id Factura: " + v.getIdFactura().getId());
+                System.out.println("Fecha Factura" + v.getIdFactura().getFecha());
+                System.out.println("Cliente: " + v.getIdFactura().getIdCliente());
+            }
+            System.out.println("Producto: ");
+            if (v.getIdProducto() != null){
+                System.out.println("Id Producto: " + v.getIdProducto() .getId());
+                System.out.println("Descripcion Producto: " + v.getIdProducto() .getDescripcion());
+                System.out.println("Precio Producto: " + v.getIdProducto() .getPrecio());
+            }
+            System.out.println("Cantidad Ventas: " + v.getCantidad());
+        }
+
+        System.out.println("------------- Update Venta -------------");
+        Venta updateSell = new Venta();
+        updateSell.setId(1);
+        updateSell.setIdFactura(facturasServiceHibernate.findFacturaById(1));
+        updateSell.setIdProducto(productoServiceHibernate.findProductoById(1));
+        updateSell.setCantidad(200);
+        try {
+            Venta result = ventasServiceHibernate.updateSell(updateSell);
+            System.out.println(result.getCantidad());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Delete Venta -------------");
+        ventasServiceHibernate.deleteSell(venta.getId());
+        System.out.println(venta.getId() + " deleted");
     }
 }
