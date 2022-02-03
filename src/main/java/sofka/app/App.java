@@ -4,6 +4,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import sofka.app.entities.*;
 import sofka.app.services.*;
+import sofka.app.services_hibernate.CategoriaServiceHibernate;
 import sofka.app.services_hibernate.ClientServiceHibernate;
 import sofka.app.utils.HibernateUtil;
 
@@ -21,7 +22,8 @@ public class App {
 //        crudFacturas();
 //        crudProducto();
 //        crudVentas();
-//        crudHibbernateClient();
+        crudHibbernateClient();
+        crudHibernateCategoria();
     }
 
     private static void crudClient() {
@@ -125,11 +127,16 @@ public class App {
         updateCliente.setNombre("Paco");
         updateCliente.setDireccion("medellin");
         updateCliente.setTelefono("32133912620");
-        Cliente result = clientServiceHibernate.updateCliente(updateCliente);
-        System.out.println(result.getNombre());
+        try {
+            Cliente result = clientServiceHibernate.updateCliente(updateCliente);
+            System.out.println(result.getNombre());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
 
         System.out.println("------------- Delete Cliente -------------");
-        clientServiceHibernate.deleteCliente(8);
+        clientServiceHibernate.deleteCliente(cliente.getId());
         System.out.println(cliente.getId() + " deleted");
     }
 
@@ -231,6 +238,58 @@ public class App {
 
         categoriaService.commitEntityTransaction();
         categoriaService.closeEntityTransaction();
+    }
+
+    private static void crudHibernateCategoria() {
+        CategoriaServiceHibernate categoriaServiceHibernate = new CategoriaServiceHibernate();
+
+        System.out.println("------------- Create Category-------------");
+        Categoria categoria = new Categoria();
+        categoria.setId(8);
+        categoria.setDescripcion("Juegos");
+        try {
+            Categoria saved = categoriaServiceHibernate.saveCategoria(categoria);
+            System.out.println(saved.getId() + " " + saved.getDescripcion());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Category By Id -------------");
+        Categoria findCategory = categoriaServiceHibernate.findCategoriaById(1);
+        System.out.println(findCategory.getId());
+        System.out.println(findCategory.getDescripcion());
+
+        System.out.println("------------- find All Categories -------------");
+        List<Categoria> categorias =  categoriaServiceHibernate.findAllClients();
+        for (Categoria c: categorias){
+            System.out.println("Id Categoria: " + c.getId());
+            System.out.println("Descripcion Categoria: " + c.getDescripcion());
+            System.out.println("Productos: ");
+            if (c.getProductos() != null){
+                for (Producto pro: c.getProductos()){
+                    System.out.println("Id Producto: " + pro.getId());
+                    System.out.println("Descripcion Producto: " + pro.getDescripcion());
+                    System.out.println("Precio Producto: " + pro.getPrecio());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Category -------------");
+        Categoria updateCategory = new Categoria();
+        updateCategory.setId(1);
+        updateCategory.setDescripcion("Asea");
+        try {
+            Categoria result = categoriaServiceHibernate.updateCategoria(updateCategory);
+            System.out.println(result.getDescripcion());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Delete Category -------------");
+        categoriaServiceHibernate.deleteCategoria(categoria.getId());
+        System.out.println(categoria.getId() + " deleted");
     }
 
     private static void crudFacturas() {
