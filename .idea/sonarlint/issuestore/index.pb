@@ -5,8 +5,6 @@ c
 3src/main/java/sofka/app/services/VentasService.java,5\9\595c9bed3c36194e3b9f76b61ae2b0e65e21ea32
 T
 $src/test/java/TestEntityManager.java,6\e\6e1cde7367e66d961603ca0861b228d47d27403c
-d
-4src/main/java/sofka/app/services/ProductService.java,9\8\98539cf7a9b789e956fc7d96745040bc6e46c50e
 c
 3src/main/java/sofka/app/services/ClientService.java,b\f\bfb707434ae0923ff66b024fe0a011ab91815505
 ]

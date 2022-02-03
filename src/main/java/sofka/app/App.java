@@ -4,10 +4,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import sofka.app.entities.*;
 import sofka.app.services.*;
-import sofka.app.services_hibernate.CategoriaServiceHibernate;
-import sofka.app.services_hibernate.ClientServiceHibernate;
-import sofka.app.services_hibernate.FacturasServiceHibernate;
-import sofka.app.services_hibernate.ProveedorServiceHibernate;
+import sofka.app.services_hibernate.*;
 import sofka.app.utils.HibernateUtil;
 
 import java.time.LocalDate;
@@ -27,7 +24,8 @@ public class App {
 //        crudHibbernateClient();
 //        crudHibernateCategoria();
 //        crudHibernateProveedor();
-        crudHibernateFacturas();
+//        crudHibernateFacturas();
+        crudHibernateProducto();
     }
 
     private static void crudClient() {
@@ -543,6 +541,73 @@ public class App {
         categoriaService.closeEntityTransaction();
         proveedoresService.commitEntityTransaction();
         proveedoresService.closeEntityTransaction();
+    }
+
+    private static void crudHibernateProducto() {
+        ProductoServiceHibernate productoServiceHibernate = new ProductoServiceHibernate();
+        CategoriaServiceHibernate categoriaServiceHibernate = new CategoriaServiceHibernate();
+        ProveedorServiceHibernate proveedorServiceHibernate = new ProveedorServiceHibernate();
+
+        System.out.println("------------- Create Producto-------------");
+        Producto producto = new Producto();
+        producto.setId(14);
+        producto.setDescripcion("gameplay");
+        producto.setPrecio(5000);
+        producto.setIdCategoria(categoriaServiceHibernate.findCategoriaById(1));
+        producto.setIdProveedor(proveedorServiceHibernate.findProveedorById(1));
+        try {
+            Producto saved = productoServiceHibernate.saveProoducto(producto);
+            System.out.println(saved.getId() + " " + saved.getDescripcion());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Find Producto By Id -------------");
+        Producto findProducto = productoServiceHibernate.findProductoById(1);
+        System.out.println(findProducto.getId());
+        System.out.println(findProducto.getDescripcion());
+
+        System.out.println("------------- find All Products -------------");
+        List<Producto> productos =  productoServiceHibernate.findAllProductos();
+        for (Producto p: productos){
+            System.out.println("Id Producto: " + p.getId());
+            System.out.println("Descripcion Producto: " + p.getDescripcion());
+            System.out.println("Precio Producto: " + p.getPrecio());
+            System.out.println("Categoria: ");
+            if (p.getIdCategoria() != null){
+                System.out.println("Id Categoria: " + p.getIdCategoria().getId());
+                System.out.println("Descripcion Categoria: " + p.getIdCategoria().getDescripcion());
+            }
+            System.out.println("Ventas: ");
+            if (p.getVentas() != null){
+                for (Venta v: p.getVentas()){
+                    System.out.println("Id Venta: " + v.getId());
+                    System.out.println("Id Factura: " + v.getIdFactura());
+                    System.out.println("Id Producto: " + v.getIdProducto());
+                    System.out.println("Cantidad: " + v.getCantidad());
+                }
+            }
+        }
+
+        System.out.println("------------- Update Producto -------------");
+        Producto updateProduct = new Producto();
+        updateProduct.setId(1);
+        updateProduct.setDescripcion("gameplay");
+        updateProduct.setPrecio(5000);
+        updateProduct.setIdCategoria(categoriaServiceHibernate.findCategoriaById(2));
+        updateProduct.setIdProveedor(proveedorServiceHibernate.findProveedorById(2));
+        try {
+            Producto result = productoServiceHibernate.updateProducto(updateProduct);
+            System.out.println(result.getDescripcion());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+
+        System.out.println("------------- Delete Factura -------------");
+        productoServiceHibernate.deleteProducto(producto.getId());
+        System.out.println(producto.getId() + " deleted");
     }
 
     private static void crudVentas() {
